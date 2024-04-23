@@ -8,8 +8,12 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Nullable>enable</Nullable>
 
-        <DirectoryToCopyImportantFilesTo>../Carbon/lib/projects/TeamCatalyst.Carbon.API/</DirectoryToCopyImportantFilesTo>
+        <DirectoryToCopyImportantFilesTo>../Carbon/lib/projects/TeamCatalyst.Carbon.Module.Test/</DirectoryToCopyImportantFilesTo>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj"/>
+    </ItemGroup>
 
     <Target Name="CopyReferenceAssemblies" AfterTargets="Build">
         <ItemGroup>
@@ -19,5 +23,6 @@
         <Copy SourceFiles="@(ReferenceAssemblies)"
               DestinationFolder="$(DirectoryToCopyImportantFilesTo)"/>
     </Target>
+
 
 </Project>

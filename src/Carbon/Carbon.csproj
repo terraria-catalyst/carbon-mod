@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="../../catalyst/Mod.Build.targets" />
+    <Import Project="../../catalyst/Mod.Build.targets"/>
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -11,5 +11,14 @@
 
         <AssemblyPublicizerPaths>$(AssemblyPublicizerPaths);$(MSBuildThisFileDirectory)carbon.publicizer.js</AssemblyPublicizerPaths>
     </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj"/>
+        <ProjectReference Include="..\TeamCatalyst.Carbon.Module.Test\TeamCatalyst.Carbon.Module.Test.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="lib\projects\" />
+    </ItemGroup>
 
 </Project>
