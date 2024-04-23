@@ -1,0 +1,3 @@
+displayName = Carbon
+author = Me
+version = 1.0.0
