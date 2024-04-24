@@ -8,3 +8,4 @@ obj/
 
 *.user
 
+/src/Carbon/lib/projects/*
