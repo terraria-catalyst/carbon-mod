@@ -1,11 +1,15 @@
+# Auto-generated IDE files and caches.
 .vs/
 .vscode/
 .idea/
 .catalyst/
 
+# Build outputs and adjacent.
 bin/
 obj/
 
+# User-specific files.
 *.user
 
-/src/Carbon/lib/projects/*
+# Extraneous mod binaries.
+src/Carbon/lib/
