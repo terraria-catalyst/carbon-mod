@@ -2,13 +2,16 @@
 using System.Numerics;
 using System.Collections.Generic;
 using Terraria.ModLoader;
+using System.Linq;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace TeamCatalyst.Carbon.Core.Particles {
-    public static class ParticleSystem {
+    public unsafe static class ParticleSystem {
         public const int MAXPARTICLES = 10000;
         static Particle[] _particles = new Particle[MAXPARTICLES];
+        static List<Particle> particlesToSort = new();
 
-        public static unsafe Particle* FindNextEmptyParticle() {
+        public static Particle* FindNextEmptyParticle() {
             Particle* particle = null;
 
             for (int i = 0; i < _particles.Length; i++) {
@@ -25,25 +28,59 @@ namespace TeamCatalyst.Carbon.Core.Particles {
         static Dictionary<int, ParticleDefinition> _cachedDefinitions = new();
 
         internal static void UpdateParticles() {
-            for(int i = 0; i <  MAXPARTICLES; i++) { 
-                ref var particle = ref _particles[i];
-                ref readonly int defID = ref particle.definition;
+            particlesToSort.Clear(); // this probably gets rid of most of my benefits, will see about replacing it later
 
-                if (defID == 0)
-                    continue;
+            for (int i = 0; i <  MAXPARTICLES; i++) {
+                fixed(Particle* particle = &_particles[i]) {
+                    int defID = particle->definition;
 
-                if (_cachedDefinitions.TryGetValue(defID, out var definition)) {
-                    definition.Update(ref particle);
-                }
-                else {
-                    // Slow update, to be avoided
-                    definition = GetDefinitionFromID(defID) as ParticleDefinition;
-
-                    if (definition is null)
+                    if (defID == 0)
                         continue;
 
-                    _cachedDefinitions.Add(defID, definition);
-                    definition.Update(ref particle);
+                    if (_cachedDefinitions.TryGetValue(defID, out var definition)) {
+                        definition.Update(particle);
+                    }
+                    else {
+                        // Slow update, to be avoided
+                        definition = GetDefinitionFromID(defID) as ParticleDefinition;
+
+                        if (definition is null)
+                            continue;
+
+                        _cachedDefinitions.Add(defID, definition);
+                        definition.Update(particle);
+                    }
+
+                    particlesToSort.Add(*particle);
+                }
+            }
+
+            particlesToSort = particlesToSort.OrderBy(p => p.definition).ToList();
+        }
+
+        internal static void DrawParticles(SpriteBatch spriteBatch) {
+            var tempSettings = new SpritebatchSettings();
+            bool activeSB = false;
+            for (int i = 0; i < MAXPARTICLES; i++) {
+                fixed (Particle* particle = &_particles[i]) {
+                    int defID = particle->definition;
+
+                    if (defID == 0)
+                        continue;
+
+                    if (_cachedDefinitions.TryGetValue(defID, out var definition)) {
+                        if (definition.spritebatchSettings.GetHashCode() != tempSettings.GetHashCode()) { // Could maybe use a better method of comparison?
+                            tempSettings = definition.spritebatchSettings;
+
+                            if (!activeSB) {
+                                spriteBatch.End();
+                            }
+
+                            spriteBatch.Begin(tempSettings.sortMode, tempSettings.blendState, tempSettings.samplerState, tempSettings.depthStencilState, tempSettings.rasterizerState, tempSettings.effect, tempSettings.transformationMatrix);
+                        }
+
+                        definition.Draw(particle, spriteBatch);
+                    }
                 }
             }
         }
