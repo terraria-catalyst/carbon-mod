@@ -72,11 +72,12 @@ namespace TeamCatalyst.Carbon.Core.Particles {
                         if (definition.spritebatchSettings.GetHashCode() != tempSettings.GetHashCode()) { // Could maybe use a better method of comparison?
                             tempSettings = definition.spritebatchSettings;
 
-                            if (!activeSB) {
+                            if (activeSB) {
                                 spriteBatch.End();
                             }
 
                             spriteBatch.Begin(tempSettings.sortMode, tempSettings.blendState, tempSettings.samplerState, tempSettings.depthStencilState, tempSettings.rasterizerState, tempSettings.effect, tempSettings.transformationMatrix);
+                            activeSB = true;
                         }
 
                         definition.Draw(particle, spriteBatch);
