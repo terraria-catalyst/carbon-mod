@@ -1,11 +1,11 @@
-﻿using static TeamCatalyst.Carbon.Core.Autoloading.Definition;
+﻿using static TeamCatalyst.Carbon.API.Core.Autoloading.Definition;
 using System.Numerics;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TeamCatalyst.Carbon.Core.Particles {
+namespace TeamCatalyst.Carbon.Core.API.Particles {
     public static class ParticleSystem {
         public const int MAXPARTICLES = 10000;
         static Particle[] _particles = new Particle[MAXPARTICLES];
