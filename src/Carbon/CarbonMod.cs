@@ -6,8 +6,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using JetBrains.Annotations;
+using Microsoft.Build.Tasks.Deployment.Bootstrapper;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content.Sources;
 using TeamCatalyst.Carbon.Core;
 using Terraria;
@@ -70,19 +73,48 @@ namespace TeamCatalyst.Carbon
         }
 
         private static Type[] GetLoadableTypesWithModules() {
-            // TODO: Add config support.
             if (AssemblyLoadContext.GetLoadContext(typeof(CarbonMod).Assembly) is not AssemblyManager.ModLoadContext mlc)
                 throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
 
+            if (!System.IO.File.Exists(ModuleConfigFile))
+            {
+                List<string> assemblies = new List<string>();
 
+                foreach (KeyValuePair<string, Assembly> pair in mlc.assemblies)
+                {
+                    string assemblyName = pair.Key;
+                    if (!assemblyName.StartsWith("TeamCatalyst.Carbon.Module"))
+                    {
+                        continue;
+                    }
+                    assemblies.Add(assemblyName);
+                }
+
+                string jsonNew = JsonConvert.SerializeObject(assemblies, Formatting.Indented);
+
+                System.IO.File.WriteAllText(ModuleConfigFile, jsonNew);
+            }
 
             List<Type> types = new List<Type>();
 
+            string json = System.IO.File.ReadAllText(ModuleConfigFile);
+            List<string> names = JsonConvert.DeserializeObject<List<string>>(json);
+
             foreach (KeyValuePair<Assembly, Type[]> pair in mlc.loadableTypes)
             {
-                Console.WriteLine(pair.Key.FullName);
+                string assemblyName = pair.Key.GetName().Name;
 
-                types.AddRange(pair.Value);
+                if (!assemblyName.StartsWith("TeamCatalyst.Carbon.Module"))
+                {
+                    types.AddRange(pair.Value);
+                }
+                else
+                {
+                    if (names.Contains(assemblyName))
+                    {
+                        types.AddRange(pair.Value);
+                    }
+                }
             }
             return types.ToArray();
         }
