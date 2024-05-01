@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="../../catalyst/Mod.Build.targets" />
 
@@ -18,7 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Core\" />
         <Folder Include="lib\projects\" />
     </ItemGroup>
 

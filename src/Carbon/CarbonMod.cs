@@ -7,16 +7,18 @@ using JetBrains.Annotations;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using ReLogic.Content.Sources;
-using TeamCatalyst.Carbon.API;
+using TeamCatalyst.Carbon.Core;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-namespace Carbon {
+namespace Carbon
+{
     [UsedImplicitly]
     internal static class Unused;
 }
 
-namespace TeamCatalyst.Carbon {
+namespace TeamCatalyst.Carbon
+{
     /// <summary>
     ///     Carbon <see cref="Mod"/> entrypoint.
     /// </summary>

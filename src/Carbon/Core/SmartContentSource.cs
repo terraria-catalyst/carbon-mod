@@ -1,19 +1,16 @@
 ﻿using ReLogic.Content.Sources;
 using ReLogic.Content;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TeamCatalyst.Carbon.API
+namespace TeamCatalyst.Carbon.Core
 {
     /// <summary>
     ///     A wrapper around a given <see cref="IContentSource"/> instance which
     ///     allows for finer control over content loading.
     /// </summary>
-    public class SmartContentSource : IContentSource
+    internal sealed class SmartContentSource : IContentSource
     {
         public IContentValidator ContentValidator
         {
