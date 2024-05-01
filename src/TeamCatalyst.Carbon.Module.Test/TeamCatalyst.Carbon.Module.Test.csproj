@@ -25,7 +25,6 @@
 
 	<ItemGroup>
 		<AssemblyAttribute Include="TeamCatalyst.Carbon.API.ModuleAttribute">
-			<DisplayName>Test Module</DisplayName>
 		</AssemblyAttribute>
 	</ItemGroup>
 </Project>
