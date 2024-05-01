@@ -19,8 +19,13 @@ namespace TeamCatalyst.Carbon {
     ///     Carbon <see cref="Mod"/> entrypoint.
     /// </summary>
     public sealed class CarbonMod : Mod {
+        public static Mod? ModReference { get; private set; }
+
         private static ILHook? getLoadableTypesHookAutoload;
         private static ILHook? getLoadableTypesHookAutoloadConfig;
+
+        public override void Load()
+            => ModReference = this;
 
         public override void Unload() {
             base.Unload();
