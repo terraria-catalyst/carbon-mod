@@ -6,6 +6,8 @@ using System.Runtime.Loader;
 using JetBrains.Annotations;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
+using ReLogic.Content.Sources;
+using TeamCatalyst.Carbon.API;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
@@ -60,6 +62,14 @@ namespace TeamCatalyst.Carbon {
                 throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
 
             return mlc.loadableTypes.SelectMany(x => x.Value).ToArray();
+        }
+
+        public override IContentSource CreateDefaultContentSource()
+        {
+            SmartContentSource source = new SmartContentSource(base.CreateDefaultContentSource());
+            source.AddDirectoryRedirect("Content", "Assets/Textures");
+            source.AddDirectoryRedirect("Common", "Assets/Textures");
+            return source;
         }
     }
 }
