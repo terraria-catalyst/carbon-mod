@@ -7,11 +7,11 @@ using Terraria.ModLoader;
 
 namespace TeamCatalyst.Carbon.Module.Test
 {
-    internal sealed class TestSystem : ILoadable
+    internal sealed class TestModule : ILoadable
     {
         public void Load(Mod mod)
         {
-            mod.Logger.Info("Hello from TestSystem!");
+            mod.Logger.Info("Hello from TestModule!");
         }
 
         public void Unload() { }

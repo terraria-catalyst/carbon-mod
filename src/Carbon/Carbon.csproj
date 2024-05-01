@@ -19,5 +19,4 @@
     <ItemGroup>
         <Folder Include="lib\projects\" />
     </ItemGroup>
-
 </Project>

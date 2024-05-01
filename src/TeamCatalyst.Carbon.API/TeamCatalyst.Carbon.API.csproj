@@ -18,5 +18,4 @@
         <Copy SourceFiles="@(ReferenceAssemblies)"
               DestinationFolder="$(DirectoryToCopyImportantFilesTo)"/>
     </Target>
-
 </Project>
