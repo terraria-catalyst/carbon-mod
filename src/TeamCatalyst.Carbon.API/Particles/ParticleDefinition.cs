@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using TeamCatalyst.Carbon.API.Core.Autoloading;
+using TeamCatalyst.Carbon.API.Autoloading;
 
-namespace TeamCatalyst.Carbon.Core.API.Particles {
+namespace TeamCatalyst.Carbon.API.Particles {
     internal abstract class ParticleDefinition : Definition {
 
         public abstract SpritebatchSettings spritebatchSettings { get; protected set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Terraria.ModLoader;
 
-namespace TeamCatalyst.Carbon.API.Core.Autoloading {
+namespace TeamCatalyst.Carbon.API.Autoloading {
     /// <summary>
     /// Simple autoloaded definition class, stores singletons of every derived type to be accessed easily from any instance.
     /// </summary>

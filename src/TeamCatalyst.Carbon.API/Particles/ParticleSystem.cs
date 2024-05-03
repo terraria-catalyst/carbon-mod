@@ -1,15 +1,17 @@
-﻿using static TeamCatalyst.Carbon.API.Core.Autoloading.Definition;
+﻿using static TeamCatalyst.Carbon.API.Autoloading.Definition;
 using System.Numerics;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TeamCatalyst.Carbon.Core.API.Particles {
+namespace TeamCatalyst.Carbon.API.Particles {
     public static class ParticleSystem {
-        public const int MAXPARTICLES = 10000;
-        static Particle[] _particles = new Particle[MAXPARTICLES];
-        static List<Particle> particlesToSort = [];
+        public const int MAX_PARTICLES = 10000;
+
+        private static Particle[] _particles = new Particle[MAX_PARTICLES];
+
+        private static List<Particle> particlesToSort = [];
 
         public static ref Particle FindNextEmptyParticle() {
             ref Particle particle = ref Particle.FailParticle;
@@ -25,12 +27,12 @@ namespace TeamCatalyst.Carbon.Core.API.Particles {
             return ref particle;
         }
 
-        static Dictionary<int, ParticleDefinition> _cachedDefinitions = new();
+        private static Dictionary<int, ParticleDefinition> _cachedDefinitions = new();
 
         internal static void UpdateParticles() {
             particlesToSort.Clear(); // this probably gets rid of most of my benefits, will see about replacing it later
 
-            for (int i = 0; i < MAXPARTICLES; i++) {
+            for (int i = 0; i < MAX_PARTICLES; i++) {
                 Particle particle = _particles[i];
                 int defID = particle.definition;
 
@@ -60,7 +62,7 @@ namespace TeamCatalyst.Carbon.Core.API.Particles {
         internal static void DrawParticles(SpriteBatch spriteBatch) {
             var tempSettings = new SpritebatchSettings();
             bool activeSB = false;
-            for (int i = 0; i < MAXPARTICLES; i++) {
+            for (int i = 0; i < MAX_PARTICLES; i++) {
                 Particle particle = _particles[i];
                 ref int defID = ref particle.definition;
 

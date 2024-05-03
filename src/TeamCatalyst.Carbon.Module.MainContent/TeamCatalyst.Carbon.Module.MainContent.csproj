@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="../../catalyst/Library.Build.targets"/>
+
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Nullable>enable</Nullable>
+
+        <DirectoryToCopyImportantFilesTo>../Carbon/lib/projects/TeamCatalyst.Carbon.Module.MainContent/</DirectoryToCopyImportantFilesTo>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj"/>
+    </ItemGroup>
+
+    <Target Name="CopyReferenceAssemblies" AfterTargets="Build">
+        <ItemGroup>
+            <ReferenceAssemblies Include="$(OutputPath)\$(ProjectName).dll"/>
+        </ItemGroup>
+
+        <Copy SourceFiles="@(ReferenceAssemblies)"
+              DestinationFolder="$(DirectoryToCopyImportantFilesTo)"/>
+    </Target>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="TeamCatalyst.Carbon.API.ModuleAttribute">
+		</AssemblyAttribute>
+	</ItemGroup>
+
+</Project>
