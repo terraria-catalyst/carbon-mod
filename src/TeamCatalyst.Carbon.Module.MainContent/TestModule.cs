@@ -2,11 +2,9 @@
 using Terraria.ModLoader;
 
 namespace TeamCatalyst.Carbon.Module.MainContent {
-    public sealed class TestModule : ICarbonModule {
-        void ILoadable.Load(Mod mod) {
-            mod.Logger.Info("Hello from TestModule!");
+    public sealed class TestModule : ModSystem {
+        public override void Load() {
+            Mod.Logger.Info("Hello from TestModule!");
         }
-
-        void ILoadable.Unload() { }
     }
 }

@@ -23,5 +23,9 @@
               DestinationFolder="$(DirectoryToCopyImportantFilesTo)"/>
     </Target>
 
+	<ItemGroup>
+		<AssemblyAttribute Include="TeamCatalyst.Carbon.API.ModuleAttribute">
+		</AssemblyAttribute>
+	</ItemGroup>
 
 </Project>
