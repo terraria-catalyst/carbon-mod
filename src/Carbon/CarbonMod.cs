@@ -1,13 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using JetBrains.Annotations;
+using Microsoft.Build.Tasks.Deployment.Bootstrapper;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content.Sources;
+using TeamCatalyst.Carbon.API;
 using TeamCatalyst.Carbon.Core;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
@@ -23,6 +30,12 @@ namespace TeamCatalyst.Carbon
     ///     Carbon <see cref="Mod"/> entrypoint.
     /// </summary>
     public sealed class CarbonMod : Mod {
+        public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
+        public static string ModuleConfigFile => Path.Join(Main.SavePath, "CarbonMod", "enabled-modules.json");
+
+        public static Dictionary<string, bool> EnabledModules { get; set; }
+        public static List<Assembly> LoadedAssemblies { get; set; }
+
         public static Mod? ModReference { get; private set; }
 
         private static ILHook? getLoadableTypesHookAutoload;
@@ -33,7 +46,7 @@ namespace TeamCatalyst.Carbon
 
         public override void Unload() {
             base.Unload();
-
+            
             getLoadableTypesHookAutoload?.Dispose();
             getLoadableTypesHookAutoload = null;
             getLoadableTypesHookAutoloadConfig?.Dispose();
@@ -42,7 +55,14 @@ namespace TeamCatalyst.Carbon
 
 #pragma warning disable CA2255
         [ModuleInitializer]
-        internal static void Initialize() {
+        internal static void Initialize() { 
+            if (!System.IO.File.Exists(CarbonFolder))
+            {
+                Directory.CreateDirectory(CarbonFolder);
+            }
+
+            InitializeModuleToggles();
+
             getLoadableTypesHookAutoload = new ILHook(typeof(Mod).GetMethod("Autoload", BindingFlags.NonPublic | BindingFlags.Instance)!, LoadableTypesHook);
             getLoadableTypesHookAutoloadConfig = new ILHook(typeof(Mod).GetMethod("AutoloadConfig", BindingFlags.NonPublic | BindingFlags.Instance)!, LoadableTypesHook);
         }
@@ -59,11 +79,76 @@ namespace TeamCatalyst.Carbon
         }
 
         private static Type[] GetLoadableTypesWithModules() {
-            // TODO: Add config support.
             if (AssemblyLoadContext.GetLoadContext(typeof(CarbonMod).Assembly) is not AssemblyManager.ModLoadContext mlc)
                 throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
 
-            return mlc.loadableTypes.SelectMany(x => x.Value).ToArray();
+            List<Type> types = new List<Type>();
+
+            foreach (KeyValuePair<Assembly, Type[]> pair in mlc.loadableTypes)
+            {
+                if (LoadedAssemblies.Contains(pair.Key))
+                {
+                    types.AddRange(pair.Value);
+                }
+            }
+
+            return types.ToArray();
+        }
+
+        internal static void InitializeModuleToggles()
+        {
+            if (AssemblyLoadContext.GetLoadContext(typeof(CarbonMod).Assembly) is not AssemblyManager.ModLoadContext mlc)
+                throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
+
+            EnabledModules = new Dictionary<string, bool>();
+            LoadedAssemblies = new List<Assembly>();
+
+            if (!System.IO.File.Exists(ModuleConfigFile))
+            {
+                System.IO.File.WriteAllText(ModuleConfigFile, "{}");
+            }
+
+            string json = System.IO.File.ReadAllText(ModuleConfigFile);
+            Dictionary<string, bool> toggledModules = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
+
+            foreach (KeyValuePair<string, Assembly> pair in mlc.assemblies)
+            {
+                if (pair.Value.GetCustomAttribute<ModuleAttribute>() is null)
+                {
+                    LoadedAssemblies.Add(pair.Value);
+                }
+                else
+                {
+                    if (toggledModules.ContainsKey(pair.Key))
+                    {
+                        bool isModuleOn = toggledModules[pair.Key];
+                        EnabledModules.Add(pair.Value.GetName().Name, isModuleOn);
+                        if (isModuleOn)
+                        {
+                            LoadedAssemblies.Add(pair.Value);
+                        }
+                    }
+                    else
+                    {
+                        EnabledModules.Add(pair.Value.GetName().Name, true);
+                        LoadedAssemblies.Add(pair.Value);
+                    }
+                }
+            }
+
+            WriteModuleToggles();
+        }
+        
+        internal static void ReadModuleToggles()
+        {
+            string json = System.IO.File.ReadAllText(ModuleConfigFile);
+            EnabledModules = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
+        }
+
+        internal static void WriteModuleToggles()
+        {
+            string json = JsonConvert.SerializeObject(EnabledModules);
+            System.IO.File.WriteAllText(ModuleConfigFile, json);
         }
 
         public override IContentSource CreateDefaultContentSource()
