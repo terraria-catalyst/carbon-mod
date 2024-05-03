@@ -1,4 +1,4 @@
 displayName = Carbon
 author = Team Catalyst
 version = 0.1.0
-dllReferences = projects/TeamCatalyst.Carbon.API/TeamCatalyst.Carbon.API, projects/TeamCatalyst.Carbon.Module.Test/TeamCatalyst.Carbon.Module.Test, projects/TeamCatalyst.Carbon.Module.MainContent/TeamCatalyst.Carbon.Module.MainContent
+dllReferences = projects/TeamCatalyst.Carbon.API/TeamCatalyst.Carbon.API,projects/TeamCatalyst.Carbon.Module.MainContent/TeamCatalyst.Carbon.Module.MainContent,projects/TeamCatalyst.Carbon.Module.Test/TeamCatalyst.Carbon.Module.Test,

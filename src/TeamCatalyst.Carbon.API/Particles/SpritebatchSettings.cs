@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace TeamCatalyst.Carbon.Core.API.Particles {
+namespace TeamCatalyst.Carbon.API.Particles {
     internal struct SpritebatchSettings {
         public readonly SpriteSortMode sortMode;
         public readonly BlendState blendState;

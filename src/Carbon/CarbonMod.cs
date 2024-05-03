@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Loader;
 using JetBrains.Annotations;
-using Microsoft.Build.Tasks.Deployment.Bootstrapper;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content.Sources;
 using TeamCatalyst.Carbon.API;
 using TeamCatalyst.Carbon.Core;
@@ -31,18 +28,20 @@ namespace TeamCatalyst.Carbon
     /// </summary>
     public sealed class CarbonMod : Mod {
         public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
+
         public static string ModuleConfigFile => Path.Join(Main.SavePath, "CarbonMod", "enabled-modules.json");
 
         public static Dictionary<string, bool> EnabledModules { get; set; }
-        public static List<Assembly> LoadedAssemblies { get; set; }
 
-        public static Mod? ModReference { get; private set; }
+        public static List<Assembly> LoadedAssemblies { get; set; }
 
         private static ILHook? getLoadableTypesHookAutoload;
         private static ILHook? getLoadableTypesHookAutoloadConfig;
 
         public override void Load()
-            => ModReference = this;
+        {
+            LogLoadedModules();
+        }
 
         public override void Unload() {
             base.Unload();
@@ -157,6 +156,16 @@ namespace TeamCatalyst.Carbon
             source.AddDirectoryRedirect("Content", "Assets/Textures");
             source.AddDirectoryRedirect("Common", "Assets/Textures");
             return source;
+        }
+
+        private void LogLoadedModules()
+        {
+            Logger.Info("Loaded Modules:");
+
+            foreach (Assembly assembly in LoadedAssemblies)
+            {
+                Logger.Info($"Module {assembly.GetName().Name}");
+            }
         }
     }
 }
