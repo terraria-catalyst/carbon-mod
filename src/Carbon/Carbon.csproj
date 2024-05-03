@@ -21,4 +21,7 @@
         <Folder Include="lib\projects\" />
     </ItemGroup>
 
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+      <Exec Command="echo displayName = Carbon&gt;&quot;$(ProjectDir)build.txt&quot;&#xD;&#xA;echo author = Team Catalyst&gt;&gt;&quot;$(ProjectDir)build.txt&quot;&#xD;&#xA;echo version = 0.1.0&gt;&gt;&quot;$(ProjectDir)build.txt&quot;&#xD;&#xA;echo|set /P _=&quot;dllReferences = &quot;&gt;&gt;&quot;$(ProjectDir)build.txt&quot;&#xD;&#xA;&#xD;&#xA;(for /R &quot;$(ProjectDir)lib\&quot; %25%25G in (&quot;*.dll&quot;) do ( &#xD;&#xA;   echo|set /P _=&quot;projects/%25%25~nG/%25%25~nG,&quot;&gt;&gt;&quot;$(ProjectDir)build.txt&quot;&#xD;&#xA;))" />
+    </Target>
 </Project>
