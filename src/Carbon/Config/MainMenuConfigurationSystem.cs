@@ -51,47 +51,46 @@ internal class MainMenuConfigurationSystem : ModSystem
     {
         ILCursor c = new(il);
 
-        if (!c.TryGotoNext(x => x.MatchStfld(typeof(ModLoader).Assembly
-            .GetType("Terraria.ModLoader.UI.UIModItem")!
-            .GetField("_moreInfoButton", BindingFlags.Instance | BindingFlags.NonPublic)!))
-            )
+        // Needs to add the button just to the left of the mod info button.
+        if (!c.TryGotoNext(x => x.MatchCall(typeof(ModLoader)
+            .GetMethod("TryGetMod", BindingFlags.Static | BindingFlags.Public)!)))
         {
             throw new Exception($"IL edit failed: {GetType().FullName}");
         }
 
-        for (int i = 0; i < 2; i++)
-        {
-            if (!c.TryGotoNext(x => x.MatchLdfld(
-                typeof(ModLoader).Assembly
-                .GetType("Terraria.ModLoader.UI.UIModItem")!
-                .GetField("_moreInfoButton", BindingFlags.Instance | BindingFlags.NonPublic)!))
-                )
-            {
-                throw new Exception($"IL edit failed: {GetType().FullName}");
-            }
-        }
+        c.Index -= 3;
 
-        c.Index += 2;
+        ILLabel label = c.DefineLabel();
+
+        // Skip the offset decrement and addition of the new element if this isn't the Carbon widget.
+        c.Emit(OpCodes.Ldarg_0);
+        c.EmitDelegate<Func<UIModItem, bool>>(uiModItem => uiModItem._mod.DisplayName == Mod.DisplayName);
+        c.Emit(OpCodes.Brfalse, label);
+
+        // Decrement the bottomRightRowOffset (local index 6) by 36 for this button.
+        c.Emit(OpCodes.Ldloc, 6);
+        c.Emit(OpCodes.Ldc_I4, 36);
+        c.Emit(OpCodes.Sub);
+        c.Emit(OpCodes.Stloc, 6);
 
         c.Emit(OpCodes.Ldarg_0);
-        c.Emit(OpCodes.Ldloc_0);
-        c.EmitDelegate<Action<UIPanel, string>>((@this, name) =>
-        {
-            // TODO: better way of verifying mod identity?
-            if (!name.Equals($"{Mod.DisplayName} v{Mod.Version}"))
-                return;
+        c.Emit(OpCodes.Ldloc, 6);
 
+        c.EmitDelegate<Action<UIModItem, int>>((uiModItem, bottomRightRowOffset) =>
+        {
             configButton = new UIImage(ModContent.Request<Texture2D>("Carbon/Assets/UI/ConfigButton"))
             {
                 Width = { Pixels = 36f },
                 Height = { Pixels = 36f },
-                Left = { Pixels = -108f - 10f, Precent = 1f },
+                Left = { Pixels = bottomRightRowOffset - 5, Precent = 1f },
                 Top = { Pixels = 40f }
             };
             configButton.OnLeftClick += ConfigButtonClick;
 
-            @this.Append(configButton);
+            uiModItem.Append(configButton);
         });
+
+        c.MarkLabel(label);
     }
 
     private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
