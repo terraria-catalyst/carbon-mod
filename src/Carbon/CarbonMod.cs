@@ -31,9 +31,9 @@ namespace TeamCatalyst.Carbon
 
         public static string ModuleConfigFile => Path.Join(Main.SavePath, "CarbonMod", "enabled-modules.json");
 
-        public static Dictionary<string, bool> EnabledModules { get; set; }
+        public static Dictionary<string, bool>? EnabledModules { get; set; }
 
-        public static List<Assembly> LoadedAssemblies { get; set; }
+        public static List<Assembly>? LoadedAssemblies { get; set; }
 
         private static ILHook? getLoadableTypesHookAutoload;
         private static ILHook? getLoadableTypesHookAutoloadConfig;
@@ -43,7 +43,8 @@ namespace TeamCatalyst.Carbon
             LogLoadedModules();
         }
 
-        public override void Unload() {
+        public override void Unload()
+        {
             base.Unload();
             
             getLoadableTypesHookAutoload?.Dispose();
@@ -54,7 +55,8 @@ namespace TeamCatalyst.Carbon
 
 #pragma warning disable CA2255
         [ModuleInitializer]
-        internal static void Initialize() { 
+        internal static void Initialize()
+        { 
             if (!System.IO.File.Exists(CarbonFolder))
             {
                 Directory.CreateDirectory(CarbonFolder);
@@ -67,7 +69,8 @@ namespace TeamCatalyst.Carbon
         }
 #pragma warning restore CA2255
 
-        private static void LoadableTypesHook(ILContext il) {
+        private static void LoadableTypesHook(ILContext il)
+        {
             var c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before, x => x.MatchCall(typeof(AssemblyManager), "GetLoadableTypes"));
@@ -77,11 +80,14 @@ namespace TeamCatalyst.Carbon
             );
         }
 
-        private static Type[] GetLoadableTypesWithModules() {
+        private static Type[] GetLoadableTypesWithModules()
+        {
             if (AssemblyLoadContext.GetLoadContext(typeof(CarbonMod).Assembly) is not AssemblyManager.ModLoadContext mlc)
+            {
                 throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
+            }
 
-            List<Type> types = new List<Type>();
+            List<Type> types = [];
 
             foreach (KeyValuePair<Assembly, Type[]> pair in mlc.loadableTypes)
             {
@@ -97,10 +103,12 @@ namespace TeamCatalyst.Carbon
         internal static void InitializeModuleToggles()
         {
             if (AssemblyLoadContext.GetLoadContext(typeof(CarbonMod).Assembly) is not AssemblyManager.ModLoadContext mlc)
+            {
                 throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
+            }
 
-            EnabledModules = new Dictionary<string, bool>();
-            LoadedAssemblies = new List<Assembly>();
+            EnabledModules = [];
+            LoadedAssemblies = [];
 
             if (!System.IO.File.Exists(ModuleConfigFile))
             {
@@ -108,7 +116,7 @@ namespace TeamCatalyst.Carbon
             }
 
             string json = System.IO.File.ReadAllText(ModuleConfigFile);
-            Dictionary<string, bool> toggledModules = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
+            Dictionary<string, bool> toggledModules = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json)!;
 
             foreach (KeyValuePair<string, Assembly> pair in mlc.assemblies)
             {
@@ -118,10 +126,10 @@ namespace TeamCatalyst.Carbon
                 }
                 else
                 {
-                    if (toggledModules.ContainsKey(pair.Key))
+                    if (toggledModules!.ContainsKey(pair.Key))
                     {
                         bool isModuleOn = toggledModules[pair.Key];
-                        EnabledModules.Add(pair.Value.GetName().Name, isModuleOn);
+                        EnabledModules.Add(pair.Value.GetName().Name!, isModuleOn);
                         if (isModuleOn)
                         {
                             LoadedAssemblies.Add(pair.Value);
@@ -129,7 +137,7 @@ namespace TeamCatalyst.Carbon
                     }
                     else
                     {
-                        EnabledModules.Add(pair.Value.GetName().Name, true);
+                        EnabledModules.Add(pair.Value.GetName().Name!, true);
                         LoadedAssemblies.Add(pair.Value);
                     }
                 }
@@ -141,24 +149,28 @@ namespace TeamCatalyst.Carbon
         internal static void ReadModuleToggles()
         {
             string json = System.IO.File.ReadAllText(ModuleConfigFile);
-            EnabledModules = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json);
+
+            EnabledModules = JsonConvert.DeserializeObject<Dictionary<string, bool>>(json)!;
         }
 
         internal static void WriteModuleToggles()
         {
             string json = JsonConvert.SerializeObject(EnabledModules);
+
             System.IO.File.WriteAllText(ModuleConfigFile, json);
         }
 
         public override IContentSource CreateDefaultContentSource()
         {
-            SmartContentSource source = new SmartContentSource(base.CreateDefaultContentSource());
+            SmartContentSource source = new(base.CreateDefaultContentSource());
+
             source.AddDirectoryRedirect("Content", "Assets/Textures");
             source.AddDirectoryRedirect("Common", "Assets/Textures");
+
             return source;
         }
 
-        private void LogLoadedModules()
+        public void LogLoadedModules()
         {
             Logger.Info("Loaded Modules:");
 

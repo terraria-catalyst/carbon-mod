@@ -1,1 +1,4 @@
-
+UI: {
+	ModuleConfig: Configure Content Modules
+	ModuleConfigReload: Confirm and Reload
+}

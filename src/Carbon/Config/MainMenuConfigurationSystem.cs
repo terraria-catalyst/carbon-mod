@@ -4,15 +4,23 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using System;
 using System.Reflection;
+using Terraria.GameContent;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
+using Microsoft.Xna.Framework;
+using Terraria.Localization;
+using Terraria.Audio;
+using Terraria.ID;
 
 namespace TeamCatalyst.Carbon.Config;
 
-internal class MainMenuConfigurationSystem : ModSystem
+internal sealed class MainMenuConfigurationSystem : ModSystem
 {
+    private const int FancyUIMenuMode = 888;
+
     private Hook? modItemDrawHook;
 
     private ILHook? configButtonHook;
@@ -45,6 +53,38 @@ internal class MainMenuConfigurationSystem : ModSystem
     private void Draw(ModItemDrawDelegate orig, UIModItem self, SpriteBatch spriteBatch)
     {
         orig(self, spriteBatch);
+
+        if (configButton == null)
+        {
+            return;
+        }
+
+        if (configButton.IsMouseHovering && self._mod.DisplayName == Mod.DisplayName)
+        {
+            Rectangle bounds = self.GetOuterDimensions().ToRectangle();
+            
+            bounds.Height += 16;
+
+            string text = Language.GetTextValue("Mods.Carbon.UI.ModuleConfig");
+
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(text);
+
+            Vector2 position = Main.MouseScreen + new Vector2(16);
+
+            position.X = Math.Min(position.X, bounds.Right - textSize.X - 16);
+            position.Y = bounds.Bottom - textSize.Y - 16;
+
+            Utils.DrawBorderStringFourWay(
+                Main.spriteBatch,
+                FontAssets.MouseText.Value,
+                text,
+                position.X,
+                position.Y,
+                Main.OurFavoriteColor,
+                Color.Black,
+                Vector2.Zero
+            );
+        }
     }
 
     private void AddNewButton(ILContext il)
@@ -58,7 +98,10 @@ internal class MainMenuConfigurationSystem : ModSystem
             throw new Exception($"IL edit failed: {GetType().FullName}");
         }
 
-        c.Index -= 3;
+        if (!c.TryGotoPrev(x => x.MatchLdarg0()))
+        {
+            throw new Exception($"IL edit failed: {GetType().FullName}");
+        }
 
         ILLabel label = c.DefineLabel();
 
@@ -67,7 +110,7 @@ internal class MainMenuConfigurationSystem : ModSystem
         c.EmitDelegate<Func<UIModItem, bool>>(uiModItem => uiModItem._mod.DisplayName == Mod.DisplayName);
         c.Emit(OpCodes.Brfalse, label);
 
-        // Decrement the bottomRightRowOffset (local index 6) by 36 for this button.
+        // Decrement the bottomRightRowOffset by 36 for this button.
         c.Emit(OpCodes.Ldloc, 6);
         c.Emit(OpCodes.Ldc_I4, 36);
         c.Emit(OpCodes.Sub);
@@ -95,6 +138,9 @@ internal class MainMenuConfigurationSystem : ModSystem
 
     private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement)
     {
-        // Change menu states
+        SoundEngine.PlaySound(SoundID.MenuOpen);
+
+        Main.menuMode = FancyUIMenuMode;
+        Main.MenuUI.SetState(new ModuleConfigState(Main.MenuUI.CurrentState));
     }
 }
