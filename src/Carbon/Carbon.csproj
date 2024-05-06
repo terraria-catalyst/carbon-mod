@@ -12,6 +12,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Assets\Modules\TeamCatalyst.Carbon.Module.MainContent.png" />
+      <None Remove="Assets\Modules\TeamCatalyst.Carbon.Module.Test.png" />
       <None Remove="Assets\UI\ConfigButton.png" />
     </ItemGroup>
 

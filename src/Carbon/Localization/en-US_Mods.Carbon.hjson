@@ -1,4 +1,20 @@
 UI: {
-	ModuleConfig: Configure Content Modules
-	ModuleConfigReload: Confirm and Reload
+	Modules: {
+		Config: Configure Content Modules
+		ConfigReload: Confirm and Reload
+		ConfigTitle: Carbon Modules
+		Available: Available Modules ({0})
+		Enabled: Enabled Modules ({0})
+	}
+}
+
+TeamCatalyst: {
+	Carbon: {
+		Module: {
+			MainContent: Main Content Pack
+			MainContentDescription: You are getting on my nerves. I don't care how much you think you are in charge of this mod, you are not and never will be. I have seen nothing from you but bickering, arguing and bringing down the mood of the mod
+			Test: Test Pack
+			TestDescription: Lorem ipsum
+		}
+	}
 }

@@ -65,7 +65,7 @@ internal sealed class MainMenuConfigurationSystem : ModSystem
             
             bounds.Height += 16;
 
-            string text = Language.GetTextValue("Mods.Carbon.UI.ModuleConfig");
+            string text = Language.GetTextValue("Mods.Carbon.UI.Modules.Config");
 
             Vector2 textSize = FontAssets.MouseText.Value.MeasureString(text);
 
