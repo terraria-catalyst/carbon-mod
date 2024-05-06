@@ -5,20 +5,25 @@ using Terraria.ModLoader;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TeamCatalyst.Carbon.API.Particles {
-    public static class ParticleSystem {
+namespace TeamCatalyst.Carbon.API.Particles
+{
+    public static class ParticleSystem
+    {
         public const int MAX_PARTICLES = 10000;
 
         private static Particle[] _particles = new Particle[MAX_PARTICLES];
 
         private static List<Particle> particlesToSort = [];
 
-        public static ref Particle FindNextEmptyParticle() {
+        public static ref Particle FindNextEmptyParticle()
+        {
             ref Particle particle = ref Particle.FailParticle;
 
-            for (int i = 0; i < _particles.Length; i++) {
+            for (int i = 0; i < _particles.Length; i++)
+            {
                 ref var partiterator = ref _particles[i];
-                if (partiterator.lifeTime == 0) {
+                if (partiterator.lifeTime == 0)
+                {
                     particle = partiterator;
                     break;
                 }
@@ -29,20 +34,24 @@ namespace TeamCatalyst.Carbon.API.Particles {
 
         private static Dictionary<int, ParticleDefinition> _cachedDefinitions = new();
 
-        internal static void UpdateParticles() {
+        internal static void UpdateParticles()
+        {
             particlesToSort.Clear(); // this probably gets rid of most of my benefits, will see about replacing it later
 
-            for (int i = 0; i < MAX_PARTICLES; i++) {
+            for (int i = 0; i < MAX_PARTICLES; i++)
+            {
                 Particle particle = _particles[i];
                 int defID = particle.definition;
 
                 if (defID == 0)
                     continue;
 
-                if (_cachedDefinitions.TryGetValue(defID, out var definition)) {
+                if (_cachedDefinitions.TryGetValue(defID, out var definition))
+                {
                     definition.Update(ref particle);
                 }
-                else {
+                else
+                {
                     // Slow update, to be avoided
                     definition = GetDefinitionFromID(defID) as ParticleDefinition;
 
@@ -59,21 +68,26 @@ namespace TeamCatalyst.Carbon.API.Particles {
             particlesToSort = particlesToSort.OrderBy(p => p.definition).ToList();
         }
 
-        internal static void DrawParticles(SpriteBatch spriteBatch) {
+        internal static void DrawParticles(SpriteBatch spriteBatch)
+        {
             var tempSettings = new SpritebatchSettings();
             bool activeSB = false;
-            for (int i = 0; i < MAX_PARTICLES; i++) {
+            for (int i = 0; i < MAX_PARTICLES; i++)
+            {
                 Particle particle = _particles[i];
                 ref int defID = ref particle.definition;
 
                 if (defID == 0)
                     continue;
 
-                if (_cachedDefinitions.TryGetValue(defID, out var definition)) {
-                    if (definition.spritebatchSettings.GetHashCode() != tempSettings.GetHashCode()) { // Could maybe use a better method of comparison?
+                if (_cachedDefinitions.TryGetValue(defID, out var definition))
+                {
+                    if (definition.spritebatchSettings.GetHashCode() != tempSettings.GetHashCode())
+                    { // Could maybe use a better method of comparison?
                         tempSettings = definition.spritebatchSettings;
 
-                        if (activeSB) {
+                        if (activeSB)
+                        {
                             spriteBatch.End();
                         }
 
@@ -87,13 +101,16 @@ namespace TeamCatalyst.Carbon.API.Particles {
         }
     }
 
-    public class ParticleModSystem : ModSystem {
-        public override void PreUpdateDusts() {
+    public class ParticleModSystem : ModSystem
+    {
+        public override void PreUpdateDusts()
+        {
             ParticleSystem.UpdateParticles();
         }
     }
 
-    public struct Particle {
+    public struct Particle
+    {
         public static Particle FailParticle = new Particle() { definition = -1 };
 
         public Vector3 position;

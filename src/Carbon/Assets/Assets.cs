@@ -1,5 +1,7 @@
-﻿namespace TeamCatalyst.Carbon.Assets {
-    internal static class Assets {
+﻿namespace TeamCatalyst.Carbon.Assets
+{
+    internal static class Assets
+    {
         // god i hate doing this but tmod's asset organization sucks, so going with this
 
         // foundational

@@ -28,7 +28,8 @@ namespace TeamCatalyst.Carbon
     /// <summary>
     ///     Carbon <see cref="Mod"/> entrypoint.
     /// </summary>
-    public sealed class CarbonMod : Mod {
+    public sealed class CarbonMod : Mod
+    {
         public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
 
         public static string ModuleConfigFile => Path.Join(Main.SavePath, "CarbonMod", "enabled-modules.json");
@@ -45,9 +46,10 @@ namespace TeamCatalyst.Carbon
             LogLoadedModules();
         }
 
-        public override void Unload() {
+        public override void Unload()
+        {
             base.Unload();
-            
+
             getLoadableTypesHookAutoload?.Dispose();
             getLoadableTypesHookAutoload = null;
             getLoadableTypesHookAutoloadConfig?.Dispose();
@@ -56,7 +58,8 @@ namespace TeamCatalyst.Carbon
 
 #pragma warning disable CA2255
         [ModuleInitializer]
-        internal static void Initialize() { 
+        internal static void Initialize()
+        {
             if (!System.IO.File.Exists(CarbonFolder))
             {
                 Directory.CreateDirectory(CarbonFolder);
@@ -69,7 +72,8 @@ namespace TeamCatalyst.Carbon
         }
 #pragma warning restore CA2255
 
-        private static void LoadableTypesHook(ILContext il) {
+        private static void LoadableTypesHook(ILContext il)
+        {
             var c = new ILCursor(il);
 
             c.GotoNext(MoveType.Before, x => x.MatchCall(typeof(AssemblyManager), "GetLoadableTypes"));
@@ -79,7 +83,8 @@ namespace TeamCatalyst.Carbon
             );
         }
 
-        private static Type[] GetLoadableTypesWithModules() {
+        private static Type[] GetLoadableTypesWithModules()
+        {
             if (AssemblyLoadContext.GetLoadContext(typeof(CarbonMod).Assembly) is not AssemblyManager.ModLoadContext mlc)
                 throw new InvalidOperationException("CarbonMod is not loaded in a ModLoadContext.");
 
@@ -139,7 +144,7 @@ namespace TeamCatalyst.Carbon
 
             WriteModuleToggles();
         }
-        
+
         internal static void ReadModuleToggles()
         {
             string json = System.IO.File.ReadAllText(ModuleConfigFile);
