@@ -1,1 +1,23 @@
+Items: {
+	HoppersFurs: {
+		DisplayName: Hoppers Furs
+		Tooltip: ""
+	}
 
+	Jackboots: {
+		DisplayName: Jackboots
+		Tooltip: ""
+	}
+
+	LeporidTransfiguration: {
+		DisplayName: Leporid Transfiguration
+		Tooltip: ""
+	}
+}
+
+Buffs: {
+	WitcheryBuff: {
+		DisplayName: Witchery Buff
+		Description: Mods.Carbon.Buffs.WitcheryBuff.Description
+	}
+}

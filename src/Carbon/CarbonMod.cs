@@ -1,4 +1,5 @@
-﻿using System;
+﻿global using static TeamCatalyst.Carbon.Assets.Assets;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -14,6 +15,7 @@ using TeamCatalyst.Carbon.Core;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+
 
 namespace Carbon
 {
