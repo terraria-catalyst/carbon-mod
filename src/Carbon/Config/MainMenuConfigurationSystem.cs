@@ -121,7 +121,7 @@ internal sealed class MainMenuConfigurationSystem : ModSystem
 
         c.EmitDelegate<Action<UIModItem, int>>((uiModItem, bottomRightRowOffset) =>
         {
-            configButton = new UIImage(ModContent.Request<Texture2D>("Carbon/Assets/UI/ConfigButton"))
+            configButton = new UIImage(ModContent.Request<Texture2D>("Carbon/Assets/Textures/UI/ConfigButton"))
             {
                 Width = { Pixels = 36f },
                 Height = { Pixels = 36f },

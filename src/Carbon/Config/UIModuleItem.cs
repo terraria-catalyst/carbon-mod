@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
-using Terraria.ID;
-using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -21,6 +17,8 @@ internal class UIModuleItem : UIPanel
     public string Module { get; private set; }
 
     private readonly Asset<Texture2D> icon;
+
+    private UIText description;
 
     public UIModuleItem(string module)
     {
@@ -39,15 +37,27 @@ internal class UIModuleItem : UIPanel
 
         OverflowHidden = true;
 
-        // TODO: Icon metadata from module key
-        icon = ModContent.Request<Texture2D>($"Carbon/Assets/Modules/{module}");
+        icon = ModContent.Request<Texture2D>($"Carbon/Assets/Textures/Modules/{module}");
 
         AddChildren();
     }
 
     protected override void DrawSelf(SpriteBatch spriteBatch)
     {
+        Rectangle frame = new(
+            (int)description.GetOuterDimensions().X,
+            (int)description.GetOuterDimensions().Y - 2,
+            (int)description.GetOuterDimensions().Width,
+            (int)GetInnerDimensions().Height - (int)description.Top.Pixels
+        );
+
         base.DrawSelf(spriteBatch);
+
+        spriteBatch.Draw(
+            TextureAssets.MagicPixel.Value,
+            frame,
+            Color.Lerp(BackgroundColor, Color.Black, 0.1f)
+        );
 
         DrawIcon(spriteBatch);
     }
@@ -56,15 +66,15 @@ internal class UIModuleItem : UIPanel
     {
         CalculatedStyle innerDimensions = GetInnerDimensions();
 
-        int width = (int)innerDimensions.Height - 12;
-        int height = (int)innerDimensions.Height - 12;
+        int width = (int)innerDimensions.Height - 4;
+        int height = (int)innerDimensions.Height - 4;
 
-        spriteBatch.Draw(icon.Value, new Rectangle((int)innerDimensions.X + 6, (int)innerDimensions.Y + 6, width, height), Color.White);
+        spriteBatch.Draw(icon.Value, new Rectangle((int)innerDimensions.X + 2, (int)innerDimensions.Y + 2, width, height), Color.White);
     }
 
     private void AddChildren()
     {
-        StyleDimension left = StyleDimension.FromPixels(93);
+        StyleDimension left = StyleDimension.FromPixels(94);
         StyleDimension top = StyleDimension.FromPixels(2);
 
         UIText title = new(Language.GetTextValue($"Mods.Carbon.{Module}"))
@@ -77,12 +87,12 @@ internal class UIModuleItem : UIPanel
 
         top.Pixels += title.GetOuterDimensions().Height + 6f;
 
-        UIText description = new(Language.GetTextValue($"Mods.Carbon.{Module}Description"), 0.6f)
+        description = new(Language.GetTextValue($"Mods.Carbon.{Module}Description"), 0.6f)
         {
             Left = left,
             Top = top,
             IsWrapped = true,
-            Width = StyleDimension.FromPixelsAndPercent(-184, 1)
+            Width = StyleDimension.FromPixelsAndPercent(-129, 1)
         };
 
         Append(description);

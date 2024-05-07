@@ -12,9 +12,7 @@ TeamCatalyst: {
 	Carbon: {
 		Module: {
 			MainContent: Main Content Pack
-			MainContentDescription: You are getting on my nerves. I don't care how much you think you are in charge of this mod, you are not and never will be. I have seen nothing from you but bickering, arguing and bringing down the mood of the mod
-			Test: Test Pack
-			TestDescription: Lorem ipsum
+			MainContentDescription: Contains the majority of the mod's content, such as new biomes, NPCs and items. We recommend this if you want to play the mod as originally intended.
 		}
 	}
 }

@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -18,11 +15,11 @@ internal sealed class ModuleConfigState : UIState
 {
     private readonly UIState previousState;
 
-    private UIText modulesAvailable;
-    private UIText modulesEnabled;
+    private UIText? modulesAvailable;
+    private UIText? modulesEnabled;
 
-    private UIList availableModulesList;
-    private UIList enabledModulesList;
+    private UIList? availableModulesList;
+    private UIList? enabledModulesList;
 
     public ModuleConfigState(UIState previousState)
     {
@@ -287,8 +284,8 @@ internal sealed class ModuleConfigState : UIState
 
     private void PopulateModuleList()
     {
-        availableModulesList.Clear();
-        enabledModulesList.Clear();
+        availableModulesList?.Clear();
+        enabledModulesList?.Clear();
 
         Dictionary<string, bool> moduleList = CarbonMod.EnabledModules!;
 
@@ -303,37 +300,23 @@ internal sealed class ModuleConfigState : UIState
 
             if (moduleInfo.Value)
             {
-                EnabledModuleElements(moduleItem);
-
-                enabledModulesList.Add(moduleItem);
+                enabledModulesList?.Add(moduleItem);
             }
             else
             {
-                AvailableModuleElements(moduleItem);
-
-                availableModulesList.Add(moduleItem);
+                availableModulesList?.Add(moduleItem);
             }
         }
 
         UpdateTitles();
     }
 
-    private void EnabledModuleElements(UIModuleItem module)
-    {
-    }
-
-    private void AvailableModuleElements(UIModuleItem module)
-    {
-    }
-
     private UIElement AddToggleButton(string key, bool enabled)
     {
-        Asset<Texture2D> asset = Main.Assets.Request<Texture2D>("Images/UI/TexturePackButtons");
-
-        UIImage button = new(asset)
+        ModuleSwitchButton button = new(enabled)
         {
-            Left = StyleDimension.FromPixelsAndPercent(-80, 1),
-            Width = StyleDimension.FromPixels(80),
+            Left = StyleDimension.FromPixelsAndPercent(-32, 1),
+            Width = StyleDimension.FromPixels(32),
             Height = StyleDimension.Fill
         };
 

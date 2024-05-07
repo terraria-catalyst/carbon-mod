@@ -12,15 +12,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <None Remove="Assets\Modules\TeamCatalyst.Carbon.Module.MainContent.png" />
-      <None Remove="Assets\Modules\TeamCatalyst.Carbon.Module.Test.png" />
-      <None Remove="Assets\UI\ConfigButton.png" />
+      <None Remove="Assets\Textures\Modules\TeamCatalyst.Carbon.Module.MainContent.png" />
+      <None Remove="Assets\Textures\UI\ConfigButton.png" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj" />
         <ProjectReference Include="..\TeamCatalyst.Carbon.Module.MainContent\TeamCatalyst.Carbon.Module.MainContent.csproj" />
-        <ProjectReference Include="..\TeamCatalyst.Carbon.Module.Test\TeamCatalyst.Carbon.Module.Test.csproj" />
     </ItemGroup>
 
     <ItemGroup>
