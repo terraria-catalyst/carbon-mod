@@ -1,18 +1,23 @@
-UI: {
-	Modules: {
-		Config: Configure Content Modules
-		ConfigReload: Confirm and Reload
-		ConfigTitle: Carbon Modules
-		Available: Available Modules ({0})
-		Enabled: Enabled Modules ({0})
+Items: {
+	HoppersFurs: {
+		DisplayName: Hoppers Furs
+		Tooltip: ""
+	}
+
+	Jackboots: {
+		DisplayName: Jackboots
+		Tooltip: ""
+	}
+
+	LeporidTransfiguration: {
+		DisplayName: Leporid Transfiguration
+		Tooltip: ""
 	}
 }
 
-TeamCatalyst: {
-	Carbon: {
-		Module: {
-			MainContent: Main Content Pack
-			MainContentDescription: Contains the majority of the mod's content, such as new biomes, NPCs and items. We recommend this if you want to play the mod as originally intended.
-		}
+Buffs: {
+	WitcheryBuff: {
+		DisplayName: Witchery Buff
+		Description: Mods.Carbon.Buffs.WitcheryBuff.Description
 	}
 }

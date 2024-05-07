@@ -1,3 +1,5 @@
+global using static TeamCatalyst.Carbon.Assets.Assets;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,6 +23,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
+
 namespace Carbon
 {
 	[UsedImplicitly]
@@ -29,12 +32,9 @@ namespace Carbon
 
 namespace TeamCatalyst.Carbon
 {
-	/// <summary>
-	///     Carbon <see cref="Mod"/> entrypoint.
-	/// </summary>
-	public sealed class CarbonMod : Mod
-	{
-		public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
+    public sealed class CarbonMod : Mod
+    {
+        public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
 
 		public static string ModuleConfigFile => Path.Join(Main.SavePath, "CarbonMod", "enabled-modules.json");
 
