@@ -36,8 +36,8 @@ namespace TeamCatalyst.Carbon
 	///		Carbon <see cref="Mod"/> entrypoint.
 	/// </summary>
 	public sealed class CarbonMod : Mod
-    {
-        public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
+	{
+		public static string CarbonFolder => Path.Join(Main.SavePath, "CarbonMod");
 
 		public static string ModuleConfigFile => Path.Join(Main.SavePath, "CarbonMod", "enabled-modules.json");
 
