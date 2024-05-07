@@ -6,9 +6,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamCatalyst.Carbon.API", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Carbon", "Carbon\Carbon.csproj", "{A55F8604-6265-4635-BBFD-ACDECE6CC32B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamCatalyst.Carbon.Module.Test", "TeamCatalyst.Carbon.Module.Test\TeamCatalyst.Carbon.Module.Test.csproj", "{25BC5086-62B9-4C6F-8748-D69E18FD5BDC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamCatalyst.Carbon.Module.MainContent", "TeamCatalyst.Carbon.Module.MainContent\TeamCatalyst.Carbon.Module.MainContent.csproj", "{DD71B353-9AD0-4668-9711-03FBAF14E73A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamCatalyst.Carbon.Module.MainContent", "TeamCatalyst.Carbon.Module.MainContent\TeamCatalyst.Carbon.Module.MainContent.csproj", "{DD71B353-9AD0-4668-9711-03FBAF14E73A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +22,6 @@ Global
 		{A55F8604-6265-4635-BBFD-ACDECE6CC32B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A55F8604-6265-4635-BBFD-ACDECE6CC32B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A55F8604-6265-4635-BBFD-ACDECE6CC32B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25BC5086-62B9-4C6F-8748-D69E18FD5BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25BC5086-62B9-4C6F-8748-D69E18FD5BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25BC5086-62B9-4C6F-8748-D69E18FD5BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25BC5086-62B9-4C6F-8748-D69E18FD5BDC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD71B353-9AD0-4668-9711-03FBAF14E73A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD71B353-9AD0-4668-9711-03FBAF14E73A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD71B353-9AD0-4668-9711-03FBAF14E73A}.Release|Any CPU.ActiveCfg = Release|Any CPU
