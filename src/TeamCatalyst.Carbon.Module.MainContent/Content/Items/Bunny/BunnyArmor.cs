@@ -96,7 +96,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Bunny
 
     public class BunnyPlayer : ModPlayer
     {
-        public bool HasBunnyChest { get; private set; }
+        public bool HasBunnyChest { get; set; }
 
         public override void ResetEffects()
         {
