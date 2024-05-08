@@ -1,5 +1,3 @@
-global using static TeamCatalyst.Carbon.Assets.Assets;
-
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -29,7 +29,7 @@ UI: {
 		ConfigTitle: Carbon Modules
 		Available: Available Modules ({0})
 		Enabled: Enabled Modules ({0})
-    }
+	}
 }
 
 TeamCatalyst: {
@@ -38,5 +38,5 @@ TeamCatalyst: {
 			MainContent: Main Content Pack
 			MainContentDescription: Contains the majority of the mod's content, such as new biomes, NPCs and items. We recommend this if you want to play the mod as originally intended.
 		}
-    }
+	}
 }

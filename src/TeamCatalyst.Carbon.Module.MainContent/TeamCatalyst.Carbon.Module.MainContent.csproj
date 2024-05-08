@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <Import Project="../../catalyst/Library.Build.targets"/>
+    <Import Project="../../catalyst/Library.Build.targets" />
 
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
@@ -11,16 +11,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj"/>
+        <ProjectReference Include="..\Carbon\Carbon.csproj" />
+        <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj" />
     </ItemGroup>
 
     <Target Name="CopyReferenceAssemblies" AfterTargets="Build">
         <ItemGroup>
-            <ReferenceAssemblies Include="$(OutputPath)\$(ProjectName).dll"/>
+            <ReferenceAssemblies Include="$(OutputPath)\$(ProjectName).dll" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(ReferenceAssemblies)"
-              DestinationFolder="$(DirectoryToCopyImportantFilesTo)"/>
+        <Copy SourceFiles="@(ReferenceAssemblies)" DestinationFolder="$(DirectoryToCopyImportantFilesTo)" />
     </Target>
 
 	<ItemGroup>

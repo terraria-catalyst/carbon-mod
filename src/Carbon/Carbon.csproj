@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <Import Project="../../catalyst/Mod.Build.targets" />
 
@@ -18,7 +18,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\TeamCatalyst.Carbon.API\TeamCatalyst.Carbon.API.csproj" />
-        <ProjectReference Include="..\TeamCatalyst.Carbon.Module.MainContent\TeamCatalyst.Carbon.Module.MainContent.csproj" />
     </ItemGroup>
 
     <ItemGroup>
