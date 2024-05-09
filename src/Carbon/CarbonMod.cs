@@ -86,7 +86,10 @@ namespace TeamCatalyst.Carbon
 			if (name.StartsWith("TeamCatalyst/Carbon/Module"))
 			{
 				var splitPath = name.Split("/");
-				name = $"Carbon/{string.Join("/", splitPath[4..])}";
+				if (splitPath.Length >= 5)
+				{
+					name = $"Carbon/{string.Join("/", splitPath[4..])}";
+				}
 			}
 			orig(name, out domain, out subName);
 		}
