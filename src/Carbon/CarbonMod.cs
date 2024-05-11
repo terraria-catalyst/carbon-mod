@@ -44,6 +44,7 @@ namespace TeamCatalyst.Carbon
 
 		private static ILHook? getLoadableTypesHookAutoload;
 		private static ILHook? getLoadableTypesHookAutoloadConfig;
+		private static Hook? getCarbonAssetsSplitName;
 
 		public override void Load()
 		{
@@ -58,6 +59,8 @@ namespace TeamCatalyst.Carbon
 			getLoadableTypesHookAutoload = null;
 			getLoadableTypesHookAutoloadConfig?.Dispose();
 			getLoadableTypesHookAutoloadConfig = null;
+			getCarbonAssetsSplitName?.Dispose();
+			getCarbonAssetsSplitName = null;
 		}
 
 #pragma warning disable CA2255
@@ -73,8 +76,25 @@ namespace TeamCatalyst.Carbon
 
 			getLoadableTypesHookAutoload = new ILHook(typeof(Mod).GetMethod("Autoload", BindingFlags.NonPublic | BindingFlags.Instance)!, LoadableTypesHook);
 			getLoadableTypesHookAutoloadConfig = new ILHook(typeof(Mod).GetMethod("AutoloadConfig", BindingFlags.NonPublic | BindingFlags.Instance)!, LoadableTypesHook);
+			getCarbonAssetsSplitName = new Hook(typeof(ModContent).GetMethod("SplitName", BindingFlags.Public | BindingFlags.Static)!, GetCarbonAssets);
 		}
+
 #pragma warning restore CA2255
+
+		private static void GetCarbonAssets(orig_SplitName orig, string name, out string domain, out string subName)
+		{
+			if (name.StartsWith("TeamCatalyst/Carbon/Module"))
+			{
+				var splitPath = name.Split("/");
+				if (splitPath.Length >= 5)
+				{
+					name = $"Carbon/{string.Join("/", splitPath[4..])}";
+				}
+			}
+			orig(name, out domain, out subName);
+		}
+
+		private delegate void orig_SplitName(string name, out string domain, out string subName);
 
 		private static void LoadableTypesHook(ILContext il)
 		{
