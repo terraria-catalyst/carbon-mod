@@ -324,7 +324,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
 
     public class SnailMucusNPC : GlobalNPC
     {
-        internal static int[] Snails = [NPCID.Snail, NPCID.GlowingSnail];
+        internal static int[] Snails = [NPCID.Snail, NPCID.GlowingSnail, NPCID.MagmaSnail, NPCID.SeaSnail, NPCID.GiantShelly, NPCID.GiantShelly2];
         internal static int[] Slimes = [NPCID.GreenSlime, NPCID.BlueSlime, NPCID.RedSlime, NPCID.YellowSlime, NPCID.PurpleSlime, NPCID.BlackSlime,
                             NPCID.IceSlime, NPCID.SpikedIceSlime, NPCID.JungleSlime, NPCID.SpikedJungleSlime, NPCID.SandSlime, NPCID.LavaSlime,
                             NPCID.MotherSlime, NPCID.BabySlime, NPCID.DungeonSlime, NPCID.Pinky, NPCID.GoldenSlime, NPCID.ShimmerSlime, NPCID.SlimeSpiked, NPCID.UmbrellaSlime,
