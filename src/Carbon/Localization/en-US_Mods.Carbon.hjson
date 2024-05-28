@@ -13,12 +13,27 @@ Items: {
 		DisplayName: Leporid Transfiguration
 		Tooltip: ""
 	}
+
+	SnailTransformAccessory: {
+		DisplayName: Hollow Shell
+		Tooltip:
+			'''
+			Leave behind slowing residue
+			Turns the holder into a snail
+			Double tap {0} to tuck into your shell, reducing taken damage by {1}% for {2} seconds
+			'''
+	}
 }
 
 Buffs: {
 	WitcheryBuff: {
 		DisplayName: Witchery Buff
 		Description: Mods.Carbon.Buffs.WitcheryBuff.Description
+	}
+
+	SnailCooldownBuff: {
+		DisplayName: Smaildiction 
+		Description: the snails fuckinG HATE YOU
 	}
 }
 
