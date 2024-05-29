@@ -99,7 +99,8 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
                 if (NPCID.Sets.Zombies[npc.type] || NPCID.Sets.DemonEyes[npc.type] || NPCID.Sets.Skeletons[npc.type]) // Zombies, Demon Eyes and Skeletons are undead, thus unholy
                     unholy = unholy == false || unholy;
                 if (Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.Halloween) ||
-                    Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions.PumpkinMoon)) // Halloween is unholy
+                    Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions.PumpkinMoon) ||
+                    npc.type == NPCID.Raven || npc.type == NPCID.HoppinJack) // Halloween is unholy
                     unholy = unholy == false || unholy;
                 if (Demons.Contains(npc.type)) // Demons are unholy
                     unholy = unholy == false || unholy;
