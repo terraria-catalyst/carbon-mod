@@ -32,7 +32,7 @@ Buffs: {
 	}
 
 	SnailCooldownBuff: {
-		DisplayName: Smaildiction 
+		DisplayName: Smaildiction
 		Description: the snails fuckinG HATE YOU
 	}
 }

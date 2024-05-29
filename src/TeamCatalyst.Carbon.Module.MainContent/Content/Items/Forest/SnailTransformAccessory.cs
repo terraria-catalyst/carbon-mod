@@ -15,6 +15,8 @@ using System.Linq;
 using Terraria.ModLoader.IO;
 using System.Runtime.InteropServices;
 using Terraria.GameContent.Bestiary;
+using static System.Formats.Asn1.AsnWriter;
+using System.IO;
 
 namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
 {
@@ -61,7 +63,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
         public const float SHELLED_DAMAGE_REDUCTION = 0.6f;
 
         // Amount of seconds mucus lasts after spawning.
-        public const int MUCUS_DURATION_SECONDS = 3;
+        public const int MUCUS_DURATION_SECONDS = 2;
         // Amount of time drained when player is in shell. It drains 1 per second when not shelled.
         public const float MUCUS_SLOWDOWN_IN_SHELL = 0.2f;
 
@@ -74,7 +76,8 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
         public override void ResetEffects()
         {
             if (Player.controlDown && Player.releaseDown && Player.doubleTapCardinalTimer[0] < 15 
-                && IsSnail && TimeInShell == 0 && !Player.HasBuff<SnailCooldownBuff>())
+                && IsSnail && TimeInShell == 0 && !Player.HasBuff<SnailCooldownBuff>()
+                && !Player.HasBuff(BuffID.BrokenArmor) && !Player.HasBuff(BuffID.WitheredArmor))
             {
                 TimeInShell = 60 * 5;
                 Player.AddBuff(ModContent.BuffType<SnailCooldownBuff>(), 60 * TIME_COOLDOWN_SECONDS, false);
@@ -85,6 +88,11 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
 
         public override void PreUpdate()
         {
+            if (Player.HasBuff(BuffID.BrokenArmor)  || Player.HasBuff(BuffID.WitheredArmor))
+            {
+                TimeInShell = 0;
+                return;
+            }
             if (CurrentlyInShell)
             {
                 TimeInShell--;
@@ -182,16 +190,16 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
         {
             if (IsSnail)
             {
-                int x = (int)Player.Center.X / 16;
-                int y = (int)(Player.position.Y + (float)Player.height - 1f) / 16;
-                Tile tile = Main.tile[x, y + 1];
+                int x = (int)((Player.position.X + (Player.width / 2)) / 16f);
+                int y = Player.gravDir == -1f ? (int)(Player.position.Y - 0.1f) / 16 : (int)((Player.position.Y + Player.height) / 16f);
+                Tile tile = Main.tile[x, y];
                 if (tile == null || !tile.HasTile || tile.IsActuated || tile.LiquidAmount > 0)
                     return;
 
-                Point16 position = new Point16(x, y + 1);
+                Point16 position = new Point16(x, y);
                 if (!TileEntity.ByPosition.ContainsKey(position))
                 {
-                    TileEntity.PlaceEntityNet(x, y + 1, ModContent.TileEntityType<SnailMucusTileEntity>());
+                    TileEntity.PlaceEntityNet(x, y, ModContent.TileEntityType<SnailMucusTileEntity>());
                 }
                 if (TileEntity.ByPosition.ContainsKey(position))
                 {
@@ -336,7 +344,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
 
         public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
         {
-            return !(Snails.Contains(entity.type) || Slimes.Contains(entity.type));
+            return !entity.boss && !(Snails.Contains(entity.type) && !Slimes.Contains(entity.type));
         }
 
         public override bool PreAI(NPC npc)
@@ -357,6 +365,24 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
         }
     }
 
+    public class SnailMucusTile : GlobalTile
+    {
+        public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+        {
+            if (Main.gamePaused)
+                return;
+            Point16 position = new Point16(i, j);
+
+            if (!TileEntity.ByPosition.ContainsKey(position))
+                return;
+            if (TileEntity.ByPosition[position] is not SnailMucusTileEntity)
+                return;
+
+            Dust dust = Dust.NewDustPerfect(new Vector2(i + Main.rand.NextFloat(), j + Main.rand.NextFloat()) * 16, DustID.Snail, Vector2.Zero);
+            dust.noGravity = true;
+        }
+    }
+
     public class SnailMucusTileEntity : ModTileEntity
     {
         public float TimeLeft { get; set; }
@@ -370,17 +396,11 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
 
         public override void OnNetPlace()
         {
-            if (Main.netMode == NetmodeID.Server)
-            {
-                NetMessage.SendData(MessageID.TileEntitySharing, number: ID, number2: Position.X, number3: Position.Y);
-            }
+            NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, Position.X, Position.Y);
         }
 
         public override void Update()
         {
-            Dust dust = Dust.NewDustPerfect(new Vector2(Position.X + Main.rand.NextFloat(), Position.Y + Main.rand.NextFloat()) * 16, DustID.Snail, Vector2.Zero);
-            dust.noGravity = true;
-
             if (Main.player[Owner].GetModPlayer<SnailTransformPlayer>().CurrentlyInShell)
             {
                 TimeLeft -= SnailTransformPlayer.MUCUS_SLOWDOWN_IN_SHELL;
@@ -392,8 +412,19 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
             if (!IsTileValidForEntity(Position.X, Position.Y) || TimeLeft <= 0)
             {
                 Kill(Position.X, Position.Y);
+                NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ID, Position.X, Position.Y);
                 return;
             }
+        }
+
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.Write(Owner);
+        }
+
+        public override void NetReceive(BinaryReader reader)
+        {
+            Owner = reader.Read();
         }
     }
 }
