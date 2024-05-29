@@ -22,7 +22,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
         // Amount of damage taken per second in holy aura.
         public const int DAMAGE_PER_SECOND = 5;
 
-        internal static int[] Demons = [NPCID.Demon, NPCID.VoodooDemon, NPCID.FireImp, NPCID.RedDevil, NPCID.DemonTaxCollector];
+        internal static int[] Demons = [NPCID.Demon, NPCID.VoodooDemon, NPCID.FireImp, NPCID.RedDevil, NPCID.DemonTaxCollector, NPCID.Krampus, NPCID.WallofFlesh, NPCID.WallofFleshEye];
         internal static int[] UndeadUnholyEnemies = [NPCID.Mummy, NPCID.BloodMummy, NPCID.DarkMummy, NPCID.LightMummy,
                                         NPCID.Ghost, NPCID.PirateGhost, NPCID.Wraith,
                                         NPCID.DesertGhoul, NPCID.DesertGhoulCorruption, NPCID.DesertGhoulCrimson, NPCID.DesertGhoulHallow,
@@ -32,7 +32,8 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
                                         NPCID.BigMimicCorruption, NPCID.BigMimicCrimson, NPCID.BigMimicHallow, NPCID.BigMimicJungle,
                                         NPCID.Clown, NPCID.GoblinShark, NPCID.BloodEelBody, NPCID.BloodEelHead, NPCID.BloodEelTail, NPCID.BloodSquid, NPCID.BloodNautilus,
                                         NPCID.Vampire, NPCID.VampireBat, NPCID.SwampThing, NPCID.CreatureFromTheDeep, NPCID.Fritz, NPCID.Reaper/*from Overwatch*/,
-                                        NPCID.Butcher, NPCID.Nailhead, NPCID.DrManFly, NPCID.Psycho];
+                                        NPCID.Butcher, NPCID.Nailhead, NPCID.DrManFly, NPCID.Psycho,
+                                        NPCID.Paladin];
 
         public override void SetStaticDefaults()
         {
