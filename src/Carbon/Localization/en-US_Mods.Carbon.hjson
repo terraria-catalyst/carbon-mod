@@ -35,6 +35,11 @@ Buffs: {
 		DisplayName: Smaildiction
 		Description: the snails fuckinG HATE YOU
 	}
+
+	HolyCleansing: {
+		DisplayName: Holy Cleansing
+		Description: Mods.Carbon.Buffs.HolyCleansing.Description
+	}
 }
 
 UI: {
@@ -46,6 +51,13 @@ UI: {
 		Enabled: Enabled Modules ({0})
 	}
 }
+
+SetBonuses.Vanilla.Silver:
+	'''
+	1 defense
+	Emits a radiant aura that weakens demons and the undead
+	Weakened enemies have defense decreased by {0} and take minor damage per second
+	'''
 
 TeamCatalyst: {
 	Carbon: {

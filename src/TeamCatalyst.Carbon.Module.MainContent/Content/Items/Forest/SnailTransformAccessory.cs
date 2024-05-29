@@ -23,7 +23,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Content.Items.Forest
     public class SnailTransformAccessory : ModItem
     {
         public override string Texture => "Terraria/Images/Item_" + ItemID.TurtleShell;
-        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Main.ReversedUpDownArmorSetBonuses ? "Key.UP" : "Key.DOWN", SnailTransformPlayer.SHELLED_DAMAGE_REDUCTION * 100, SnailTransformPlayer.TIME_EFFECT_SECONDS);
+        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(Language.GetTextValue(Main.ReversedUpDownArmorSetBonuses ? "Key.UP" : "Key.DOWN"), SnailTransformPlayer.SHELLED_DAMAGE_REDUCTION * 100, SnailTransformPlayer.TIME_EFFECT_SECONDS);
 
         public override void SetDefaults()
         {
