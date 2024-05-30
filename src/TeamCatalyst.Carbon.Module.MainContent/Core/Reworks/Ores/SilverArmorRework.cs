@@ -28,7 +28,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
                                         NPCID.DesertDjinn, NPCID.EnchantedSword,
                                         NPCID.DesertGhoul, NPCID.DesertGhoulCorruption, NPCID.DesertGhoulCrimson, NPCID.DesertGhoulHallow,
                                         NPCID.Werewolf, NPCID.PossessedArmor,
-                                        NPCID.Nymph, NPCID.LostGirl,
+                                        NPCID.Nymph, NPCID.LostGirl, NPCID.Medusa,
                                         NPCID.Mimic, NPCID.IceMimic, NPCID.PresentMimic,
                                         NPCID.BigMimicCorruption, NPCID.BigMimicCrimson, NPCID.BigMimicHallow, NPCID.BigMimicJungle,
                                         NPCID.Clown, NPCID.GoblinShark, NPCID.BloodEelBody, NPCID.BloodEelHead, NPCID.BloodEelTail, NPCID.BloodSquid, NPCID.BloodNautilus,

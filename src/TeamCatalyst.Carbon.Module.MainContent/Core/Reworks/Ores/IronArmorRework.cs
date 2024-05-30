@@ -48,6 +48,10 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
                     continue;
                 if (npc.lifeMax <= 5)
                     continue;
+                if (npc.SpawnedFromStatue)
+                    continue;
+                if (npc.type == NPCID.TargetDummy)
+                    continue;
                 if (Vector2.Distance(npc.position, player.position) > IRON_DEFENSE_RADIUS)
                     continue;
 
