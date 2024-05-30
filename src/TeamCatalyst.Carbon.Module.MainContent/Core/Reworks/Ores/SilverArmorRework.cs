@@ -98,27 +98,27 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
                     continue;
                 bool unholy = false;
                 if (NPCID.Sets.Zombies[npc.type] || NPCID.Sets.DemonEyes[npc.type] || NPCID.Sets.Skeletons[npc.type]) // Zombies, Demon Eyes and Skeletons are undead, thus unholy
-                    unholy = unholy == false || unholy;
+                    unholy = true;
                 if (Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Events.Halloween) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions.PumpkinMoon) ||
                     npc.type == NPCID.Raven || npc.type == NPCID.HoppinJack) // Halloween is unholy
-                    unholy = unholy == false || unholy;
+                    unholy = true;
                 if (Demons.Contains(npc.type)) // Demons are unholy
-                    unholy = unholy == false || unholy;
+                    unholy = true;
                 if (UndeadUnholyEnemies.Contains(npc.type)) // Undead/Unholy enemies are unholy
-                    unholy = unholy == false || unholy;
+                    unholy = true;
                 if (Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundCorruption) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.CorruptDesert) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.CorruptUndergroundDesert) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.CorruptIce)) // The Corruption is unholy
-                    unholy = unholy == false || unholy;
+                    unholy = true;
                 if (Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundCrimson) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.CrimsonDesert) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.CrimsonUndergroundDesert) ||
                     Main.BestiaryDB.FindEntryByNPCID(npc.netID).Info.Contains(BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.CrimsonIce)) // The Crimson is unholy
-                    unholy = unholy == false || unholy;
+                    unholy = true;
                 if (!unholy)
                     continue;
                 if (Vector2.Distance(npc.position, player.position) > HOLY_AURA_RADIUS)
