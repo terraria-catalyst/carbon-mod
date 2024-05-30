@@ -52,12 +52,21 @@ UI: {
 	}
 }
 
-SetBonuses.Vanilla.Silver:
-	'''
-	1 defense
-	Emits a radiant aura that weakens demons and the undead
-	Weakened enemies have defense decreased by {0} and take minor damage per second
-	'''
+SetBonuses: {
+	Vanilla: {
+		Iron:
+			'''
+			1 defense
+			Increases defense by {0} for every nearby enemy
+			'''
+		Silver:
+			'''
+			1 defense
+			Emits a radiant aura that weakens demons and the undead
+			Weakened enemies have defense decreased by {0} and take damage over time
+			'''
+	}
+}
 
 TeamCatalyst: {
 	Carbon: {

@@ -25,6 +25,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
         internal static int[] Demons = [NPCID.Demon, NPCID.VoodooDemon, NPCID.FireImp, NPCID.RedDevil, NPCID.DemonTaxCollector, NPCID.Krampus, NPCID.WallofFlesh, NPCID.WallofFleshEye];
         internal static int[] UndeadUnholyEnemies = [NPCID.Mummy, NPCID.BloodMummy, NPCID.DarkMummy, NPCID.LightMummy,
                                         NPCID.Ghost, NPCID.PirateGhost, NPCID.Wraith,
+                                        NPCID.DesertDjinn, NPCID.EnchantedSword,
                                         NPCID.DesertGhoul, NPCID.DesertGhoulCorruption, NPCID.DesertGhoulCrimson, NPCID.DesertGhoulHallow,
                                         NPCID.Werewolf, NPCID.PossessedArmor,
                                         NPCID.Nymph, NPCID.LostGirl,
@@ -83,7 +84,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
             if (set != "CarbonSilver")
                 return;
             player.statDefense -= 2;
-            player.setBonus = Language.GetTextValue("Mods.Carbon.SetBonuses.Vanilla.Silver").FormatWith(DEFENSE_REDUCTION);
+            player.setBonus = Language.GetTextValue("Mods.Carbon.SetBonuses.Vanilla.Silver", DEFENSE_REDUCTION);
 
             for (int i = 0; i < Main.npc.Length; i++)
             {
