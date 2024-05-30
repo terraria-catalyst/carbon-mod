@@ -89,13 +89,7 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
             for (int i = 0; i < Main.npc.Length; i++)
             {
                 NPC npc = Main.npc[i];
-                if (!npc.active)
-                    continue;
-                if (npc.friendly)
-                    continue;
-                if (npc.dontTakeDamage)
-                    continue;
-                if (npc.lifeMax <= 5)
+                if (!npc.CanBeChasedBy(player))
                     continue;
                 bool unholy = false;
                 if (NPCID.Sets.Zombies[npc.type] || NPCID.Sets.DemonEyes[npc.type] || NPCID.Sets.Skeletons[npc.type]) // Zombies, Demon Eyes and Skeletons are undead, thus unholy

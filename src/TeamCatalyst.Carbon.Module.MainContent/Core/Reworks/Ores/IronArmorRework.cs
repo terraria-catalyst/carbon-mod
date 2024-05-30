@@ -42,32 +42,14 @@ namespace TeamCatalyst.Carbon.Module.MainContent.Core.Reworks.Ores
             for (int i = 0; i < Main.npc.Length; i++)
             {
                 NPC npc = Main.npc[i];
-                if (!npc.active)
+                if (!npc.CanBeChasedBy(player, true))
                     continue;
-                if (npc.friendly)
-                    continue;
-                if (npc.lifeMax <= 5)
-                    continue;
-                if (npc.SpawnedFromStatue)
-                    continue;
-                if (npc.type == NPCID.TargetDummy)
+                if (npc.SpawnedFromStatue || npc.type == NPCID.TargetDummy)
                     continue;
                 if (Vector2.Distance(npc.position, player.position) > IRON_DEFENSE_RADIUS)
                     continue;
 
                 player.statDefense += IRON_DEFENSE;
-            }
-
-            for (int i = 0; i < 20; i++)
-            {
-                Vector2 offset = new();
-                double angle = Main.rand.NextDouble() * 2 * Math.PI;
-                offset.X += (float)(Math.Sin(angle) * IRON_DEFENSE_RADIUS);
-                offset.Y += (float)(Math.Cos(angle) * IRON_DEFENSE_RADIUS);
-                Vector2 spawnPos = player.Center + offset - new Vector2(4, 4);
-
-                Dust dust = Dust.NewDustPerfect(spawnPos, DustID.Iron, Vector2.Zero);
-                dust.noGravity = true;
             }
         }
     }
